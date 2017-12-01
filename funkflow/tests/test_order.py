@@ -31,7 +31,7 @@ class TestOrder(TestCase):
                                       previous=None), Event.fill)),
                      fill(new(100), 60))
 
-  def tet_multiple_fills(self):
+  def test_multiple_fills(self):
     o = new(100)
     o = fill(o, 40)
     o = fill(o, 60)
@@ -46,4 +46,6 @@ class TestOrder(TestCase):
                                                            state=State.new,
                                                            previous=None),
                                                      Event.fill)),
-                                     Event.fill)))
+                                     Event.fill)),
+                     o)
+
