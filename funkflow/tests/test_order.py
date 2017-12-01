@@ -49,3 +49,20 @@ class TestOrder(TestCase):
                                      Event.fill)),
                      o)
 
+  def test_over_fill(self):
+    o = new(100)
+    o = fill(o, 60)
+    o = fill(o, 60)
+    self.assertEqual(Order(quantity=100,
+                           leaves_quantity=-20,
+                           state=State.over_filled,
+                           previous=(Order(quantity=100,
+                                           leaves_quantity=40,
+                                           state=State.partially_filled,
+                                           previous=(Order(quantity=100,
+                                                           leaves_quantity=100,
+                                                           state=State.new,
+                                                           previous=None),
+                                                     Event.fill)),
+                                     Event.fill)),
+                     o)
