@@ -26,5 +26,8 @@ def fill(order, quantity):
   new_order = order._replace(leaves_quantity=order.leaves_quantity-quantity)
   for guard,new_state in transitions[order.state][Event.fill]:
     if guard(new_order):
-      return new_order._replace(state=new_state, previous=(order,Event.fill))
+      return new_order._replace(state=new_state, 
+                                previous=(order, 
+                                          Event.fill, 
+                                          {'quantity': quantity}))
   return new_order

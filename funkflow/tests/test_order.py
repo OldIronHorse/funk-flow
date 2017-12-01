@@ -16,9 +16,10 @@ class TestOrder(TestCase):
                            leaves_quantity=0, 
                            state=State.filled, 
                            previous=(Order(quantity=100, 
-                                      leaves_quantity=100, 
-                                      state=State.new, 
-                                      previous=None), Event.fill)),
+                                           leaves_quantity=100, 
+                                           state=State.new, 
+                                           previous=None), 
+                                     Event.fill, {'quantity':100})),
                      fill(new(100), 100))
 
   def test_single_partial_fill(self):
@@ -26,9 +27,10 @@ class TestOrder(TestCase):
                            leaves_quantity=40, 
                            state=State.partially_filled, 
                            previous=(Order(quantity=100, 
-                                      leaves_quantity=100, 
-                                      state=State.new, 
-                                      previous=None), Event.fill)),
+                                           leaves_quantity=100, 
+                                           state=State.new, 
+                                           previous=None), 
+                                     Event.fill, {'quantity': 60})),
                      fill(new(100), 60))
 
   def test_multiple_fills(self):
@@ -45,8 +47,10 @@ class TestOrder(TestCase):
                                                            leaves_quantity=100,
                                                            state=State.new,
                                                            previous=None),
-                                                     Event.fill)),
-                                     Event.fill)),
+                                                     Event.fill,
+                                                     {'quantity': 40})),
+                                     Event.fill,
+                                     {'quantity': 60})),
                      o)
 
   def test_over_fill(self):
@@ -63,6 +67,8 @@ class TestOrder(TestCase):
                                                            leaves_quantity=100,
                                                            state=State.new,
                                                            previous=None),
-                                                     Event.fill)),
-                                     Event.fill)),
+                                                     Event.fill,
+                                                     {'quantity': 60})),
+                                     Event.fill,
+                                     {'quantity': 60})),
                      o)
