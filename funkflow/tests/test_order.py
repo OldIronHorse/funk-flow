@@ -3,11 +3,7 @@
 from unittest import TestCase
 from funkflow.order import Order, State, new, Event, fill
 
-
-TestCase.maxDiff=None
-
 class TestOrder(TestCase):
-  maxDiff = None
   def test_new(self):
     self.assertEqual(Order(quantity=100, 
                            leaves_quantity=100, 
@@ -16,7 +12,6 @@ class TestOrder(TestCase):
                      new(100))
 
   def test_single_fill(self):
-    self.maxDiff = None
     self.assertEqual(Order(quantity=100, 
                            leaves_quantity=0, 
                            state=State.filled, 
@@ -25,3 +20,30 @@ class TestOrder(TestCase):
                                       state=State.new, 
                                       previous=None), Event.fill)),
                      fill(new(100), 100))
+
+  def test_single_partial_fill(self):
+    self.assertEqual(Order(quantity=100, 
+                           leaves_quantity=40, 
+                           state=State.partially_filled, 
+                           previous=(Order(quantity=100, 
+                                      leaves_quantity=100, 
+                                      state=State.new, 
+                                      previous=None), Event.fill)),
+                     fill(new(100), 60))
+
+  def tet_multiple_fills(self):
+    o = new(100)
+    o = fill(o, 40)
+    o = fill(o, 60)
+    self.assertEqual(Order(quantity=100,
+                           leaves_quantity=0,
+                           state=State.filled,
+                           previous=(Order(quantity=100,
+                                           leaves_quantity=60,
+                                           state=State.partially_filled,
+                                           previous=(Order(quantity=100,
+                                                           leaves_quantity=100,
+                                                           state=State.new,
+                                                           previous=None),
+                                                     Event.fill)),
+                                     Event.fill)))

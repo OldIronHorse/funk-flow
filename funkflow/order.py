@@ -11,12 +11,12 @@ transitions = {
   State.new: {
     Event.fill: [
                  (lambda o: o.leaves_quantity == 0, State.filled),
-                 (lambda o: o.leaves.quantity > 0, State.partially_filled),
+                 (lambda o: o.leaves_quantity > 0, State.partially_filled),
                  (lambda o: o.leaves_quantity < 0, State.over_filled)]},
   State.partially_filled: {
     Event.fill: [
                  (lambda o: o.leaves_quantity == 0, State.filled),
-                 (lambda o: o.leaves.quantity > 0, State.partially_filled),
+                 (lambda o: o.leaves_quantity > 0, State.partially_filled),
                  (lambda o: o.leaves_quantity < 0, State.over_filled)]}}
 
 def new(quantity):
